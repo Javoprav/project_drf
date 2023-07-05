@@ -10,6 +10,13 @@ class MilageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CarMilageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Milage
+        fields = ['year', 'milage', 'id']
+
+
 class MotorcycleSerializers(serializers.ModelSerializer):
     # last_milage = serializers.SerializerMethodField()
 
@@ -33,6 +40,9 @@ class CarSerializers(serializers.ModelSerializer):
     # добавление поля last_milage (последний пробег) только для чтения
     # last_milage = serializers.SerializerMethodField()
 
+    milage = CarMilageSerializer(many=True, read_only=True, source='milage_set')
+    # вывод для запроса информации по машине список заполненных пробегов.
+
     class Meta:
         model = Car
         fields = '__all__'
@@ -47,3 +57,12 @@ class CarSerializers(serializers.ModelSerializer):
     #     if milage:
     #         return milage.milage
     #     return 0
+
+
+class MotoMilageSerializer(serializers.ModelSerializer):
+    moto = MotorcycleSerializers(many=False)
+
+    class Meta:
+        model = Milage
+        fields = ['year', 'milage', 'id', 'moto']
+        # fields = '__all__'
