@@ -66,3 +66,20 @@ class MotoMilageSerializer(serializers.ModelSerializer):
         model = Milage
         fields = ['year', 'milage', 'id', 'moto']
         # fields = '__all__'
+
+
+class CarCreateSerializers(serializers.ModelSerializer):
+    """Добавление пробега вместе с добавлением мотоцикла и машины."""
+
+    milage = CarMilageSerializer(many=True)
+
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+    def create(self, validated_data):
+        milage = validated_data.pop('milage')
+        car_instance = Car.objects.create(**validated_data)
+        for m in milage:
+            Milage.objects.create(car=car_instance, **m)
+        return car_instance
