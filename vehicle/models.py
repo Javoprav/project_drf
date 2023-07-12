@@ -1,10 +1,13 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.conf import settings
 NULLABLE = {'null': True, 'blank': True}
 
 
 class Car(models.Model):
     model = models.CharField(max_length=128, verbose_name='модель')
     year = models.PositiveSmallIntegerField(default=1900, verbose_name='год выпуска!')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
 
     def __str__(self):
         return f'{self.model} ({self.year})'
@@ -17,6 +20,7 @@ class Car(models.Model):
 class Motorcycle(models.Model):
     model = models.CharField(max_length=128, verbose_name='модель')
     year = models.PositiveSmallIntegerField(default=1900, verbose_name='год выпуска!')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
 
     def __str__(self):
         return f'{self.model} ({self.year})'
