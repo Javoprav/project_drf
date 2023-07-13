@@ -47,6 +47,13 @@ class CarSerializers(serializers.ModelSerializer):
         model = Car
         fields = '__all__'
 
+    def create(self, validated_data):
+        milage_data = validated_data.pop('milage_set')
+        car_instance = Car.objects.create(**validated_data)
+        for m in milage_data:
+            Milage.objects.create(car=car_instance, **m)
+        return car_instance
+
         # fields = (
         #     'model',
         #     'year'
