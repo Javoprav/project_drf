@@ -51,7 +51,7 @@ class ModelValidator:
 
 
 class CarSerializers(serializers.ModelSerializer):
-    last_milage = serializers.IntegerField(source='milage_set.last.milage', default=0, read_only=True)
+    # last_milage = serializers.IntegerField(source='milage_set.last.milage', default=0, read_only=True)
     # добавление поля last_milage (последний пробег) только для чтения
     # last_milage = serializers.SerializerMethodField()
 

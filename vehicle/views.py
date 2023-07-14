@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from vehicle.models import Motorcycle, Car, Milage
+from vehicle.pagination import MaterialsPagination
 from vehicle.permissions import OwnerOrStuff
 from vehicle.serializers import MotorcycleSerializers, CarSerializers, MilageSerializer, MotoMilageSerializer, \
     CarCreateSerializers
@@ -22,6 +23,7 @@ class CarListView(generics.ListAPIView):
     serializer_class = CarSerializers
     queryset = Car.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = MaterialsPagination  # пагинация
 
 
 class CarUpdateAPIView(generics.UpdateAPIView):
