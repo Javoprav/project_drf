@@ -7,7 +7,10 @@ from django.contrib.auth.models import User
 class CarTestCase(APITestCase):
     """Необходимо обложить тестами один эндпоинт создания сущности и один эндпоинт отображения списка или одной \
      сущности.
-    Посчитать покрытие тестами."""
+    Посчитать покрытие тестами.
+    pip install coverage
+    coverage run --source='.' manage.py test
+    coverage html"""
     def setUp(self) -> None:
         # Подготовка данных перед каждым тестом
         self.user = User(username='max', is_staff=True)
