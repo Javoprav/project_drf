@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from vehicle.models import Motorcycle, Car, Milage
-from vehicle.pagination import MaterialsPagination
+from vehicle.pagination import MaterialsPagination, MotoPagination
 from vehicle.permissions import OwnerOrStuff
 from vehicle.serializers import MotorcycleSerializers, CarSerializers, MilageSerializer, MotoMilageSerializer, \
     CarCreateSerializers
@@ -12,6 +12,11 @@ from vehicle.serializers import MotorcycleSerializers, CarSerializers, MilageSer
 class MotorcycleViewSet(viewsets.ModelViewSet):
     serializer_class = MotorcycleSerializers
     queryset = Motorcycle.objects.all()
+    pagination_class = MotoPagination
+
+
+class MotoCreateAPIView(generics.CreateAPIView):
+    serializer_class = MotorcycleSerializers
 
 
 class CarRetrieveView(generics.RetrieveAPIView):

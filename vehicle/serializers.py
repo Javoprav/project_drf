@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from vehicle.models import Motorcycle, Car, Milage
-from vehicle.validators import ModelValidator
+from vehicle.validators import ModelValidator, validator_scam_words
 
 
 class MilageSerializer(serializers.ModelSerializer):
@@ -71,7 +71,7 @@ class MotoMilageSerializer(serializers.ModelSerializer):
 
 class CarCreateSerializers(serializers.ModelSerializer):
     """Добавление пробега вместе с добавлением мотоцикла и машины."""
-
+    model = serializers.CharField(max_length=128, validators=[validator_scam_words])
     milage = CarMilageSerializer(many=True, source='milage_set', required=False)
 
     class Meta:

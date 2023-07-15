@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from vehicle.models import Motorcycle, Car
 
+SCAM_WORDS = ['крипта', "продам", "биржа"]
+
 
 class ModelValidator:
     """Для эндпоинта создания машин и мотоциклов описать валидатор, который проверяет, что название модели состоит /
@@ -17,3 +19,8 @@ class ModelValidator:
         if Car.objects.filter(model=model_name).exists() \
                 or Motorcycle.objects.filter(model=model_name).exists():
             raise serializers.ValidationError('Not unique model name')
+
+
+def validator_scam_words(value):
+    if set(value.lower().split()) in set(SCAM_WORDS) or value.lower().split() in SCAM_WORDS or value.lower() in SCAM_WORDS:
+        raise serializers.ValidationError('Использованы запрещенные слова')

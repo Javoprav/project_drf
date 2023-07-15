@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.core.validators import RegexValidator
+
 NULLABLE = {'null': True, 'blank': True}
 
 
 class Car(models.Model):
-    model = models.CharField(max_length=128, verbose_name='модель')
+    model = models.CharField(max_length=128, verbose_name='модель')  # validators=[RegexValidator] - Встроенный валидатор
     year = models.PositiveSmallIntegerField(default=1900, verbose_name='год выпуска!')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
 
