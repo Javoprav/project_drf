@@ -1,7 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path
-from vehicle.views import MotorcycleViewSet, CarListView, CarCreateAPIView, MilageCreateAPIView, MilageMotoListAPIView, \
-    MilageListAPIView, CarRetrieveAPIView, MotoCreateAPIView
+from vehicle.views import *
 
 router = DefaultRouter()
 router.register(r'moto', MotorcycleViewSet, basename='moto')
@@ -18,4 +17,6 @@ urlpatterns = [
     path('milage/', MilageListAPIView.as_view(), name='milage_list'),
     path('milage/create/', MilageCreateAPIView.as_view(), name='milage_create'),
     path('milage/moto/', MilageMotoListAPIView.as_view(), name='milage_moto_list'),
+
+    path('total/', TotalAPIView.as_view(), name='total'),
 ] + router.urls

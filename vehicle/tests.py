@@ -2,7 +2,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
-
 from vehicle.models import Motorcycle
 
 
@@ -13,8 +12,7 @@ class CarTestCase(APITestCase):
     pip install coverage
     coverage run --source='.' manage.py test
     coverage html
-    python manage.py test vehicle.tests - команда для запуска
-"""
+    python manage.py test vehicle.tests - команда для запуска"""
 
     def setUp(self) -> None:
         # Подготовка данных перед каждым тестом

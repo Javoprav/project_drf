@@ -88,3 +88,10 @@ class CarCreateSerializers(serializers.ModelSerializer):
             for m in milage:
                 Milage.objects.create(car=car_instance, **m)
         return car_instance
+
+
+class TotalDataSerializer(serializers.Serializer):
+    total_cars = serializers.IntegerField(default=0, label='Total car in storage')
+    total_moto = serializers.IntegerField(default=0, label='Total moto in storage')
+    total_cars_milage = serializers.IntegerField(default=0)
+    total_moto_milage = serializers.IntegerField(default=0)

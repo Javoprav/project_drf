@@ -1,12 +1,14 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from vehicle.models import Motorcycle, Car, Milage
 from vehicle.pagination import MaterialsPagination, MotoPagination
 from vehicle.permissions import OwnerOrStuff
-from vehicle.serializers import MotorcycleSerializers, CarSerializers, MilageSerializer, MotoMilageSerializer, \
-    CarCreateSerializers
+from vehicle.serializers import *
 
 
 class MotorcycleViewSet(viewsets.ModelViewSet):
@@ -76,3 +78,21 @@ class MilageListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['car', 'moto']
     ordering_fields = ['year']
+
+
+class TotalAPIView(APIView):
+    """Задача Подключить drf-yasg. Настроить документацию для проекта. Создать эндпоинт на базе APIView для вывода
+    общей информации по количеству машин, количеству мотоциклов, а также суммарному пробегу по машинам и мотоциклам.
+    Описать для этого эндпоинта документацию вручную."""
+
+    @swagger_auto_schema(responses={200: TotalDataSerializer})
+    def get(self, *args, **kwargs):
+        cars_milage = Milage.objects.filter(car__isnull=False).values_list('milage', flat=True)
+        moto_milage = Milage.objects.filter(moto__isnull=False).values_list('milage', flat=True)
+        response = {
+            'total_cars': Car.objects.all().count(),
+            'total_moto': Motorcycle.objects.all().count(),
+            'total_cars_milage': sum(list(cars_milage)),
+            'total_moto_milage': sum(list(moto_milage))
+        }
+        return Response(response)
