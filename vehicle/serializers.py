@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from vehicle.models import Motorcycle, Car, Milage
-from vehicle.services import convert_currencies
+from vehicle.services import convert_currencies, convert_eur
 from vehicle.validators import ModelValidator, validator_scam_words
 
 
@@ -42,6 +42,7 @@ class CarSerializers(serializers.ModelSerializer):
     milage = CarMilageSerializer(many=True, read_only=True, source='milage_set', required=False)
     usd_price = serializers.SerializerMethodField()
     # вывод для запроса информации по машине список заполненных пробегов.
+    eur_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Car
@@ -51,6 +52,9 @@ class CarSerializers(serializers.ModelSerializer):
         """Реализовать получение курса валют от сервиса currencyapi.com/ для вывода суммы машины или мотоцикла в
         долларах при условии, что изначально все суммы заводились в рублях."""
         return convert_currencies(instance.amount)
+
+    def get_eur_price(self, instance):
+        return convert_eur(instance.amount)
 
     # def create(self, validated_data):
     #     milage_data = validated_data.pop('milage_set')
