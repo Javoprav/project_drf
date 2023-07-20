@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -156,3 +159,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1500),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
 }
+
+CUR_API_URL = os.getenv("CUR_API_URL")
+CUR_API_KEY = os.getenv("CUR_API_KEY")
