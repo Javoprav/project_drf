@@ -163,3 +163,7 @@ SIMPLE_JWT = {
 CUR_API_URL = os.getenv("CUR_API_URL")
 CUR_API_KEY = os.getenv("CUR_API_KEY")
 CUR_KEY_APILAYER = os.getenv("CUR_KEY_APILAYER")
+
+# Настройки для Celery
+CELERY_BROKER_URL = 'redis://localhost:6379'  # URL-адрес брокера сообщений, например Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # URL-адрес брокера результатов, также Redis
