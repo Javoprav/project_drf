@@ -33,6 +33,11 @@ class CarListView(generics.ListAPIView):
     pagination_class = MaterialsPagination  # пагинация
 
 
+class Car_ListView(generics.ListAPIView):
+    serializer_class = Car_Serializers
+    queryset = Car.objects.all()
+
+
 class CarUpdateAPIView(generics.UpdateAPIView):
     serializer_class = CarSerializers
 
@@ -60,6 +65,14 @@ class MilageMotoListAPIView(generics.ListAPIView):
     serializer_class = MotoMilageSerializer
 
 
+class MotoMilageCreateAPIView(generics.CreateAPIView):
+    serializer_class = MotoCreateMilageSerializer
+
+
+class CarMilageCreateAPIView(generics.CreateAPIView):
+    serializer_class = CarMilageSerializer
+
+
 """Реализовать эндпоинт для получения пробегов и добавить фильтрацию:
 выводить список только пробегов для машин,
 выводить список только пробегов для мотоциклов,
@@ -80,8 +93,10 @@ class MilageListAPIView(generics.ListAPIView):
     ordering_fields = ['year']
 
 
+
 class TotalAPIView(APIView):
     """Задача Подключить drf-yasg. Настроить документацию для проекта. Создать эндпоинт на базе APIView для вывода
+
     общей информации по количеству машин, количеству мотоциклов, а также суммарному пробегу по машинам и мотоциклам.
     Описать для этого эндпоинта документацию вручную."""
 

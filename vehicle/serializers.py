@@ -13,11 +13,32 @@ class MilageSerializer(serializers.ModelSerializer):
 class CarMilageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Milage
-        fields = ['year', 'milage', 'id']
+        fields = ['year', 'milage']
+
+
+class MotoCreateMilageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Milage
+        fields = ['year', 'milage']
+
+
+class Car_Serializers(serializers.ModelSerializer):
+    milage = CarMilageSerializer(many=True, read_only=True, source='milage_set')
+
+    class Meta:
+        model = Car
+        fields = "__all__"
+
+
+class MotoMilageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Milage
+        fields = ['year', 'milage']
 
 
 class MotorcycleSerializers(serializers.ModelSerializer):
     # last_milage = serializers.SerializerMethodField()
+    milage = MotoMilageSerializer(many=True, read_only=True, source='milage_set')
 
     class Meta:
         model = Motorcycle
@@ -51,10 +72,12 @@ class CarSerializers(serializers.ModelSerializer):
     def get_usd_price(self, instance):
         """Реализовать получение курса валют от сервиса currencyapi.com/ для вывода суммы машины или мотоцикла в
         долларах при условии, что изначально все суммы заводились в рублях."""
-        return convert_currencies(instance.amount)
+        # return convert_currencies(instance.amount)
+        return instance.amount
 
     def get_eur_price(self, instance):
-        return convert_eur(instance.amount)
+        # return convert_eur(instance.amount)
+        return instance.amount
 
     # def create(self, validated_data):
     #     milage_data = validated_data.pop('milage_set')
