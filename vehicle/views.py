@@ -60,6 +60,10 @@ class CarCreateAPIView(generics.CreateAPIView):
 class MilageCreateAPIView(generics.CreateAPIView):
     serializer_class = MilageSerializer
 
+    def perform_create(self, serializer):
+        self.object = serializer.save()
+        milage_check.delay(self.object.pk)
+
 
 class MilageMotoListAPIView(generics.ListAPIView):
     queryset = Milage.objects.filter(moto__isnull=False)
