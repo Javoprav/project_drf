@@ -9,6 +9,7 @@ from vehicle.models import Motorcycle, Car, Milage
 from vehicle.pagination import MaterialsPagination, MotoPagination
 from vehicle.permissions import OwnerOrStuff
 from vehicle.serializers import *
+from vehicle.tasks import milage_check
 
 
 class MotorcycleViewSet(viewsets.ModelViewSet):
@@ -67,6 +68,10 @@ class MilageMotoListAPIView(generics.ListAPIView):
 
 class MotoMilageCreateAPIView(generics.CreateAPIView):
     serializer_class = MotoCreateMilageSerializer
+
+    def perform_create(self, serializer):
+        self.object = serializer.save()
+        milage_check.delay(self.object.pk)
 
 
 class CarMilageCreateAPIView(generics.CreateAPIView):
