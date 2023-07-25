@@ -62,6 +62,7 @@ class MilageCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         self.object = serializer.save()
+        print(self.object.__dict__)
         milage_check.delay(self.object.pk)
 
 
