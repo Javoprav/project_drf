@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',  # CORS
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +168,4 @@ CUR_KEY_APILAYER = os.getenv("CUR_KEY_APILAYER")
 # Настройки для Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'  # URL-адрес брокера сообщений, например Redis
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # URL-адрес брокера результатов, также Redis
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
