@@ -1,3 +1,5 @@
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
@@ -5,11 +7,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from config import settings
 from vehicle.models import Motorcycle, Car, Milage
 from vehicle.pagination import MaterialsPagination, MotoPagination
 from vehicle.permissions import OwnerOrStuff
 from vehicle.serializers import *
-from vehicle.tasks import milage_check
+from vehicle.tasks import milage_check, send_message_about_like
 
 
 class MotorcycleViewSet(viewsets.ModelViewSet):
@@ -62,7 +66,6 @@ class MilageCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         self.object = serializer.save()
-        print(self.object.__dict__)
         milage_check.delay(self.object.pk)
 
 
@@ -121,3 +124,15 @@ class TotalAPIView(APIView):
             'total_moto_milage': sum(list(moto_milage))
         }
         return Response(response)
+
+
+class SetLikeToCar(APIView):
+
+    def post(self, request):
+        user = self.request.user
+        car = get_object_or_404(Car, pk=request.data.get("car"))
+        if car.likes.filter(id=user.id).exists():
+            return Response({"result": f"У {car} уже есть лайк от {user}"})
+        send_message_about_like.delay()
+        car.likes.add(user)
+        return Response({"result": f"Лайк добавлен для {car}, от {user}"})

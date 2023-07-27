@@ -1,3 +1,5 @@
+import datetime
+
 from celery import shared_task
 
 from vehicle.models import Milage, Car
@@ -25,3 +27,17 @@ def filter_check():
     cars_list = Car.objects.filter(**filter_cond)
     if cars_list.exists():
         print('send_mail')
+
+
+@shared_task
+def send_message_about_like():
+    print(f"Сообщение отправлено в чат тг")
+
+
+def send_today_milage_mail():
+    """Для работы с очередями реализовать функционал лайков и отправлять пользователю письмо на электронную почту.
+    Для работы с периодическими задачами добавить поле «Дата рождения собаки» и отправлять хозяину поздравление с
+    днем рождения на электронную почту. Для обеих рассылок реализовать отправку через телеграм-бота."""
+    milage_list = Milage.objects.filter(year=datetime.date.today())
+    for item in milage_list:
+        print(f"Send mail for user in {item}")

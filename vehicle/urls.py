@@ -13,6 +13,7 @@ urlpatterns = [
     path('car/create/', CarCreateAPIView.as_view(), name='car_create'),
     path('moto/create/', MotoCreateAPIView.as_view(), name='moto_create'),
     path('car/<int:pk>/', CarRetrieveAPIView.as_view(), name='car_view'),
+    path('car/set_like/', SetLikeToCar.as_view(), name='set_like'),
 
     # Milage
     path('car/milage/<int:pk>/', CarMilageCreateAPIView.as_view(), name='car_milage_create'),
