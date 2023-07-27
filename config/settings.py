@@ -169,3 +169,4 @@ CUR_KEY_APILAYER = os.getenv("CUR_KEY_APILAYER")
 CELERY_BROKER_URL = 'redis://localhost:6379'  # URL-адрес брокера сообщений, например Redis
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # URL-адрес брокера результатов, также Redis
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
