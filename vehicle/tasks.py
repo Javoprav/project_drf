@@ -1,6 +1,6 @@
 from celery import shared_task
 
-from vehicle.models import Milage
+from vehicle.models import Milage, Car
 
 
 @shared_task
@@ -16,3 +16,12 @@ def milage_check(milage_pk):
             # send_mail
         else:
             print('Good owner')
+
+
+def filter_check():
+    """Создать задачу по расписанию, которая будет по заданным параметрам искать мотоциклы или машины и отправлять
+    уведомление пользователю на почту."""
+    filter_cond = {'price__lte': 100}
+    cars_list = Car.objects.filter(**filter_cond)
+    if cars_list.exists():
+        print('send_mail')
